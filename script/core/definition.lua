@@ -48,6 +48,8 @@ local accept = {
     ['number']      = true,
     ['integer']     = true,
     ['...']         = true,
+    ['super']       = true,  -- MSW mLua super keyword
+    ['call']        = true,  -- For constructor calls
 
     ['doc.type.name']    = true,
     ['doc.class.name']   = true,

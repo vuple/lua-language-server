@@ -1637,6 +1637,55 @@ local compilerSwitch = util.switch()
             vm.setNode(source, valueNode)
         end
     end)
+    : case 'super'
+    ---@async
+    : call(function (source)
+        -- Handle 'super' keyword - resolve to parent class
+        local parentFunc = guide.getParentFunction(source)
+        if not parentFunc then
+            return
+        end
+
+        -- Get the class from the function's parent (setmethod)
+        local setMethod = parentFunc.parent
+        if not setMethod or setMethod.type ~= 'setmethod' then
+            return
+        end
+
+        -- Get class node
+        local classNode = setMethod.node
+        if not classNode then
+            return
+        end
+
+        -- Get class name
+        local className = guide.getKeyName(classNode)
+        if not className then
+            return
+        end
+
+        -- Find parent class via @class annotation
+        local classType = vm.getGlobal('type', className)
+        if not classType then
+            return
+        end
+
+        -- Search for extends
+        for _, set in ipairs(classType:getSets(guide.getUri(source))) do
+            if set.type == 'doc.class' and set.extends then
+                for _, extend in ipairs(set.extends) do
+                    if extend.type == 'doc.extends.name' then
+                        local parentClassName = extend[1]
+                        local parentType = vm.getGlobal('type', parentClassName)
+                        if parentType then
+                            vm.setNode(source, parentType)
+                            return
+                        end
+                    end
+                end
+            end
+        end
+    end)
     : case 'getlocal'
     ---@async
     : call(function (source)
@@ -2016,6 +2065,7 @@ local compilerSwitch = util.switch()
         if source.node.special == 'rawset' then
             return
         end
+
         local node = getReturn(source.node, 1, source.args)
         if not node then
             return

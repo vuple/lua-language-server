@@ -182,6 +182,12 @@ DIAG_INJECT_FIELD_FIX_CLASS           =
 'To do so, use `---@class` for `{node}`.'
 DIAG_INJECT_FIELD_FIX_TABLE           =
 'To allow injection, add `{fix}` to the definition.'
+DIAG_OVERRIDE_PARAM_COUNT             =
+'Override method `{}` parameter count mismatch: expected {} parameters, got {}.'
+DIAG_OVERRIDE_PARAM_TYPE              =
+'Override method parameter `{}` type mismatch: expected `{}`, got `{}`.'
+DIAG_OVERRIDE_RETURN_TYPE             =
+'Override method `{}` return type mismatch: expected `{}`, got `{}`.'
 
 MWS_NOT_SUPPORT         =
 '{} does not support multi workspace for now, I may need to restart to support the new workspace ...'

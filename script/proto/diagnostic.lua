@@ -78,6 +78,7 @@ m.register {
     'cast-type-mismatch',
     'return-type-mismatch',
     'inject-field',
+    'override-signature',
     --'unnecessary-assert',
 } {
     group    = 'type-check',

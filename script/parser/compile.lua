@@ -117,6 +117,7 @@ local Specials = {
     ['ipairs']       = true,
     ['assert']       = true,
     ['error']        = true,
+    ['super']        = true,  -- MSW mLua OOP super keyword
     ['type']         = true,
     ['os.exit']      = true,
 }
@@ -2276,6 +2277,14 @@ local function resolveName(node)
     if not node then
         return nil
     end
+
+    -- Handle 'super' as a special keyword
+    if node[1] == 'super' then
+        node.type = 'super'
+        node.special = 'super'
+        return node
+    end
+
     local var = getVariable(node[1], node.start)
     if var and (var.type == 'local' or var.type == 'self') then
         node.type = 'getlocal'
